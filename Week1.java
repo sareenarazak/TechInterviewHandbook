@@ -418,6 +418,79 @@ public class Week1 {
         }
     }
 
+
+    /**Given head, the head of a linked list, determine if the linked list has a cycle in it.
+
+    There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer.
+    Internally, pos is used to denote the index of the node that tail's next pointer is connected to. Note that pos is not passed as a parameter.
+
+    Return true if there is a cycle in the linked list. Otherwise, return false.
+    */
+
+    private static boolean hasCycleLinkedList(ListNode head) {
+        if(head == null || head.next == null) return false;
+        if(head == head.next) return true;
+        ListNode slow = head;
+        ListNode fast = head;
+        while(fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+            if(fast == slow) return true;
+        }
+        return false;
+    }
+
+
+    /**
+     * Given a binary tree, determine if it is height-balanced
+
+        Example 1:
+        Input: root = [3,9,20,null,null,15,7]
+        Output: true
+
+        Example 2:
+        Input: root = [1,2,2,3,3,null,null,4,4]
+        Output: false
+
+        Example 3:
+        Input: root = []
+        Output: true
+     */
+    // Height balanced tree right subtree height and left subtree height differ by 0 or 1 
+    private static boolean isHeightBalancedBF(TreeNode root) {
+        if(root == null) return true;
+        int leftHeight = heightBinaryTree(root.left);
+        int rightHeight = heightBinaryTree(root.right);
+        if(Math.abs(leftHeight - rightHeight) > 1) return false;
+        return isHeightBalancedBF(root.left) && isHeightBalancedBF(root.right);
+    }
+
+    private static int heightBinaryTree(TreeNode root) {
+        if(root == null) return 0;
+
+        return 1 + Math.max(heightBinaryTree(root.left), heightBinaryTree(root.right));
+    }
+
+    private static boolean isHeightBalanced(TreeNode root) {
+        if(root == null) return true;
+        return heightBalancedHelper(root) != -1;
+
+    }
+
+
+    private static int heightBalancedHelper(TreeNode root) {
+        if(root == null) return 0;
+
+        int leftHeight = heightBalancedHelper(root.left);
+        int rightHeight = heightBalancedHelper(root.right);
+        
+        if(leftHeight == -1) return -1;
+        if(rightHeight == -1) return -1;
+        if(Math.abs(leftHeight - rightHeight) > 1) return -1;
+
+        return 1 + Math.max(leftHeight, rightHeight);
+    }
+
     /** LCA - lowest common ancestor in A BST */
     // TESTEDIN LEET CODE
     // in A BST if the current node is < p and > p that is the LCA node cos the node
